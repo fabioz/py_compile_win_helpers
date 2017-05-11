@@ -2,10 +2,10 @@
 
 Helpers to setup the environment to compile extensions for Python.
 
-It's meant to be used in Python code to automate getting a library and building 
+It's meant to be used in Python code to automate getting a library and building
 it as an extension module without relying on the current env.
 
-It should take care of env variables such as MSSdk, DISTUTILS_USE_SDK, finding 
+It should take care of env variables such as MSSdk, DISTUTILS_USE_SDK, finding
 the compiler and executing vcvarsall or SetEnv as needed.
 
 Example:
@@ -16,6 +16,9 @@ Example:
 		env = py_compile_win_helpers.get_compile_env()
 		subprocess.check_call(['python', 'setup.py', 'build'], env=env, cwd=os.path.join('some_repo'))
 
+Can be installed with:
+
+	pip install py_compile_win_helpers
 
 # Requisites
 
