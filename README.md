@@ -14,7 +14,17 @@ Example:
 		subprocess.check_call(['git', 'clone', 'some_repo'])
 		import py_compile_win_helpers
 		env = py_compile_win_helpers.get_compile_env()
+		subprocess.check_call(['python', 'setup.py', 'clean'], env=env, cwd=os.path.join('some_repo'))
 		subprocess.check_call(['python', 'setup.py', 'build'], env=env, cwd=os.path.join('some_repo'))
+
+It's also possible to get it for another python executable:
+
+	def main():
+		subprocess.check_call(['git', 'clone', 'some_repo'])
+		import py_compile_win_helpers
+		env = py_compile_win_helpers.get_compile_env(py_32_64)
+		subprocess.check_call([py_32_64, 'setup.py', 'clean'], env=env, cwd=os.path.join('some_repo'))
+		subprocess.check_call([py_32_64, 'setup.py', 'bdist_egg'], env=env, cwd=os.path.join('some_repo'))
 
 Can be installed with:
 
