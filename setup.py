@@ -15,7 +15,7 @@ setup(
 
 # Note: nice reference: https://jamie.curle.io/blog/my-first-experience-adding-package-pypi/
 # New version: change version and then:
-# git tag -a py_compile_win_helpers_1_5_0
+# git tag -a py_compile_win_helpers_1_0_0
 # git push --tags
 # python setup.py sdist
 # python setup.py sdist upload
