@@ -9,7 +9,6 @@ with open('py_compile_win_helpers') as f:
     m = re.search("version = '(.*)'", f.read())
     assert m is not None
     version = m.group(1)
-    break
 
 setup(
     name='py_compile_win_helpers',
