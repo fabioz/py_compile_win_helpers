@@ -31,3 +31,5 @@ For Python 3.5 and 3.6, Visual Studio 2015 is needed.
 
 -- Note, older versions can be found at https://www.visualstudio.com/vs/older-downloads/
 but you need to register with Microsoft (free) to be able to find downloads for older versions of Visual Studio
+
+https://wiki.python.org/moin/WindowsCompilers can be of help too.
