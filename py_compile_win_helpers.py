@@ -3,7 +3,6 @@ import struct
 import subprocess
 import sys
 
-# Format expected for setup.py
 version = '1.0.2'
 __version__ = version
 

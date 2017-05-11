@@ -2,17 +2,10 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-    
-import re
-
-with open('py_compile_win_helpers') as f:
-    m = re.search("version = '(.*)'", f.read())
-    assert m is not None
-    version = m.group(1)
 
 setup(
     name='py_compile_win_helpers',
-    version=version,
+    version='1.0.2',  # Also update in py_compile_win_helpers.py
     description='Helpers to setup the environment to compile extensions for Python',
     author='Fabio Zadrozny',
     url='https://github.com/fabioz/py_compile_win_helpers',
