@@ -2,9 +2,51 @@ import os
 import struct
 import subprocess
 import sys
+import json
 
-version = '1.0.2'
+version = '1.0.3'
 __version__ = version
+
+def get_conda_envs_dir():
+    # Conda helper
+    json_output = subprocess.Popen(
+        ["conda", "info", '--json'],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0]
+    as_dict = json.loads(json_output)
+
+    envs = as_dict['envs_dirs']
+
+    if len(envs) != 1:
+        base_workspace = os.path.normcase(os.path.dirname(os.path.abspath('.')))
+
+        new_envs = [env for env in envs if
+                    os.path.normcase(os.path.abspath(env)).startswith(
+                        base_workspace)]
+        assert len(new_envs) == 1, 'Expected 1 env. Found: %s. Base: %s' % (
+            envs, base_workspace)
+
+        envs = new_envs
+
+    assert len(envs) == 1, 'Expected 1 env. Found: %s' % (envs,)
+    conda_envs_dir = next(iter(envs))
+    return conda_envs_dir
+
+
+def get_python_exe_from_env(conda_envs_dir, env_name):
+    # Conda helper
+    env_dir = os.path.join(conda_envs_dir, env_name)
+    if not os.path.exists(env_dir):
+        raise RuntimeError('Env does not exist: %s' % (env_dir,))
+    for exe_name in ('python.exe', 'python', 'python.bat'):
+        py_exe = os.path.join(env_dir, exe_name)
+        if os.path.exists(py_exe):
+            return py_exe
+        py_exe = os.path.join(env_dir, 'bin', exe_name)
+        if os.path.exists(py_exe):
+            return py_exe
+
+    raise RuntimeError('Unable to find Python executable in %s' % (env_dir,))
+
 
 def validate_pair(ob):
     try:
