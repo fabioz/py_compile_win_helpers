@@ -18,12 +18,18 @@ def get_conda_envs_dir():
 
     if len(envs) != 1:
         base_workspace = os.path.normcase(os.path.dirname(os.path.abspath('.')))
+        initial_base_workspace = base_workspace
 
-        new_envs = [env for env in envs if
-                    os.path.normcase(os.path.abspath(env)).startswith(
-                        base_workspace)]
+        while base_workspace:
+            new_envs = [env for env in envs if
+                        os.path.normcase(os.path.abspath(env)).startswith(
+                            base_workspace)]
+            if len(new_envs) == 1:
+                break
+            base_workspace = os.path.dirname(base_workspace)
+            
         assert len(new_envs) == 1, 'Expected 1 env. Found: %s. Base: %s' % (
-            envs, base_workspace)
+            envs, initial_base_workspace)
 
         envs = new_envs
 
