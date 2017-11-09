@@ -1,17 +1,21 @@
+import json
 import os
 import struct
 import subprocess
 import sys
-import json
 
-version = '1.0.3'
+version = '1.0.4'
 __version__ = version
+
 
 def get_conda_envs_dir():
     # Conda helper
     json_output = subprocess.Popen(
         ["conda", "info", '--json'],
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0]
+
+    if sys.version_info[0] >= 3:
+        json_output = json_output.decode('utf-8')
     as_dict = json.loads(json_output)
 
     envs = as_dict['envs_dirs']
@@ -26,8 +30,11 @@ def get_conda_envs_dir():
                             base_workspace)]
             if len(new_envs) == 1:
                 break
-            base_workspace = os.path.dirname(base_workspace)
-            
+            new_workspace = os.path.dirname(base_workspace)
+            if new_workspace == base_workspace:
+                break
+            base_workspace = new_workspace
+
         assert len(new_envs) == 1, 'Expected 1 env. Found: %s. Base: %s' % (
             envs, initial_base_workspace)
 
@@ -70,6 +77,7 @@ def consume(it):
             next(it)
     except StopIteration:
         pass
+
 
 def get_environment_from_batch_command(env_cmd, initial=None):
     """
@@ -119,8 +127,10 @@ def get_environment_from_batch_command(env_cmd, initial=None):
     proc.communicate()
     return result
 
+
 def is_python_64bit():
     return (struct.calcsize('P') == 8)
+
 
 def get_compile_env(py_executable=None):
     if py_executable is not None:
@@ -141,7 +151,7 @@ def get_compile_env(py_executable=None):
                 new_dict[key] = val
             ret = new_dict
         return ret
-        
+
     env = os.environ.copy()
     if sys.platform == 'win32':
         # "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars64.bat"
@@ -186,10 +196,12 @@ def get_compile_env(py_executable=None):
 
     return env
 
+
 def print_env_as_json():
     env = get_compile_env()
     import json
     print(json.dumps(env))
+
 
 if __name__ == '__main__':
     if '--json' in sys.argv:
