@@ -153,7 +153,7 @@ def get_compile_env(py_executable=None):
         return ret
 
     env = os.environ.copy()
-    if sys.platform == 'win32':
+    if sys.platform == 'win32' and os.getenv('WIN_COMPILE_HELPERS') != 'disable':
         # "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars64.bat"
         # set MSSdk=1
         # set DISTUTILS_USE_SDK=1
