@@ -158,14 +158,11 @@ def get_compile_env(py_executable=None):
         # set MSSdk=1
         # set DISTUTILS_USE_SDK=1
         # set VS100COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools
-        if sys.version_info[:2] in ((2, 6), (2, 7), (3, 5), (3, 6), (3, 7), (3, 8)):
+        if sys.version_info[:2] in ((3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (3, 11), (3, 12)):
             import setuptools  # We have to import it first for the compiler to be found
             from distutils import msvc9compiler
 
-            if sys.version_info[:2] in ((2, 6), (2, 7)):
-                vcvarsall = msvc9compiler.find_vcvarsall(9.0)
-            elif sys.version_info[:2] in ((3, 5), (3, 6), (3, 7), (3, 8)):
-                vcvarsall = msvc9compiler.find_vcvarsall(14.0)
+            vcvarsall = msvc9compiler.find_vcvarsall(14.0)
             if vcvarsall is None or not os.path.exists(vcvarsall):
                 raise RuntimeError('Error finding vcvarsall.')
 
