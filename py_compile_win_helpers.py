@@ -139,7 +139,7 @@ def get_compile_env(py_executable=None):
         try:
             ret = json.loads(json_output)
         except Exception:
-            sys.stderr.write('Error getting env for\n%s.\nOutput:\%s' % (py_executable, json_output))
+            sys.stderr.write('Error getting env for\n%s.\nOutput:\n%s' % (py_executable, json_output.decode('utf-8')))
             raise
         if sys.version_info[0] <= 2:
             new_dict = {}
@@ -197,7 +197,7 @@ def get_compile_env(py_executable=None):
 def print_env_as_json():
     env = get_compile_env()
     import json
-    print(json.dumps(env))
+    print(json.dumps(env, indent=4))
 
 
 if __name__ == '__main__':
